@@ -16,8 +16,10 @@ import timeit
 pd.options.mode.chained_assignment = None  # default='warn'
 
 # Funcions
-def SinuosityByLineString(geom_linestring):
+def SinuosityLineString(geom_linestring):
     '''
+    Calcula a sinoosidade de uma linha
+    ----------
     Parameters
     ----------
     geom : shapely.LineString
@@ -63,6 +65,8 @@ def SortPointsBySpaceTime(
         ):
     
     '''
+    Ordena um conjunto de ponto linearmente por meio de atributos espaço-temporais
+    ----------
     Parameters
     ----------
     gdf : gpd.GeoDataFrame
@@ -224,6 +228,54 @@ def SortPointsBySpaceTime(
     
     # Retorna o gdf ordenado com as colunas de ordem e distância entre pontos sequenciais
     return gdf_sorted
+
+def SplitLineStringByMaxLengthRandom(
+        line,
+        max_length=20.0,
+        random=False,
+        mean=0,
+        max_diff=1):
+    '''
+    Divide uma linha em segmentos de extensão "max_length" (exatas) e permite variações
+    normalmente distribuidas com média "mean" e diferença máxima "max_diff"
+    ----------
+    Parameters
+    ----------
+    line : shapely.LineString
+        Describe
+    max_length : float, optional (default = 20.0)
+        Describe
+    random : bool, optional (default = True)
+        Describe
+    mean : float, optional (default = 0)
+        Describe
+    max_diff : float, optional (default = 1)
+        Describe
+    Returns
+    -------
+    list_segments : list
+        Return a list of segments (shapely.LineString)
+    '''
+    # Verifica se o comprimento é válido
+    if max_length<=0:
+        raise ValueError(f"O comprimento {max_length} é inválido.")
+    
+    # Se a linha já é menor ou igual ao comprimento máximo, retorna ela mesma
+    if line.length<=max_length:
+        return [line]
+    
+    # Estima os limites de divisão
+    split_lenght = np.arange(0,line.length+max_length,max_length)
+    # Acrescenta um fator estocástico a divisão
+    if random:
+        split_lenght_rand = np.random.normal(mean,max_diff/6,len(split_lenght)-2)
+        split_lenght_rand = np.concatenate((np.zeros(2),split_lenght_rand,np.zeros(1)))
+        split_lenght = split_lenght + split_lenght_rand[1:] - split_lenght_rand[:-1]
+
+    # Cria substrings com a extensão desejada a partir da string original
+    list_segments = [shapely.ops.substring(line,start,end) for start,end in zip(split_lenght[:-1],split_lenght[1:])]
+    
+    return list_segments
 
 if __name__=="__main__":
     pass
