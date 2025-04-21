@@ -103,7 +103,7 @@ def SortPointsBySpaceTime(
     if print_progress:
         start_timer = timeit.default_timer()
     
-    # Se não tiver "inital_point", estima o ponto mais extremo como inicial
+    # Se não tiver "closest_point", estima o ponto mais extremo como inicial
     if closest_point==None:
         # Ponto correspondente ao centroide dos pontos
         centroid_point = gdf.dissolve()['geometry'].geometry.centroid[0]
