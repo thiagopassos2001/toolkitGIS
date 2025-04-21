@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Mar 23 21:43:06 2025
-
-@author: thiagop
+toolkitGIS
 """
 
 # Funções complementar GIS
