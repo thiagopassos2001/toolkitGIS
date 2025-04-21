@@ -6,6 +6,9 @@ _Some complementary functions and scripts to manipulate and analyze data with GI
 Lista de funções:
 
 ```
-SortPointsBySpaceTime # Ordena um conjunto de ponto linearmente por meio de atributos espaço-temporais
-SinuosityLineString # Calcula a sinoosidade de uma linha
+SortPointsBySpaceTime # Ordena um conjunto de pontos com atributos espaço-temporais
+
+SinuosityLineString # Calcula a sinusidade de uma linha
+
+SplitLineStringByMaxLengthRandom # Divide uma linha em segmentos na extensão solicitada
 ```
